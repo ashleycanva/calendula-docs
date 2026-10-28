@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lumen theme documentation</title>
+  <meta name="description" content="How to set up and customize Lumen, the Shopify theme for med spas, aesthetic clinics and skincare lines.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400&display=swap">
+  <style>
+    :root {
+      --sand: #EFEAE0; --ink: #1B2140; --mute: #5E6277; --rule: #CFC7B6; --surface: #E6E0D1; --copper: #92593B;
+      --serif: 'Instrument Serif', Georgia, serif; --sans: Inter, system-ui, sans-serif; --mono: 'IBM Plex Mono', ui-monospace, monospace;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) { --sand: #14182E; --ink: #EFEAE0; --mute: #A9ACBD; --rule: #333A5C; --surface: #1C2140; --copper: #D69A72; }
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 24px; }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+    body { margin: 0; background: var(--sand); color: var(--ink); font: 16px/1.65 var(--sans); }
+    a { color: inherit; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+    a:hover { color: var(--copper); }
+    :focus-visible { outline: 2px solid var(--copper); outline-offset: 2px; }
+    .wrap { display: grid; grid-template-columns: 260px minmax(0, 1fr); max-width: 1180px; margin: 0 auto; gap: 56px; padding: 0 28px; }
+    nav.toc { position: sticky; top: 0; align-self: start; max-height: 100vh; overflow-y: auto; padding: 40px 0; }
+    .brand { font-family: var(--serif); font-size: 34px; line-height: 1; text-decoration: none; display: block; margin-bottom: 4px; }
+    .label { font-family: var(--mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--copper); }
+    nav.toc ol { list-style: none; margin: 24px 0 0; padding: 0; border-top: 1px solid var(--rule); }
+    nav.toc li a { display: flex; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--rule); text-decoration: none; font-size: 14.5px; }
+    nav.toc li a span { font-family: var(--mono); font-size: 11.5px; color: var(--mute); width: 22px; flex: none; padding-top: 2px; }
+    main { padding: 40px 0 120px; min-width: 0; }
+    h1, h2, h3 { font-family: var(--serif); font-weight: 400; line-height: 1.05; letter-spacing: -0.01em; }
+    h1 { font-size: clamp(44px, 6vw, 72px); margin: 8px 0 16px; }
+    h1 em { color: var(--copper); }
+    h2 { font-size: clamp(32px, 4vw, 44px); margin: 0 0 16px; }
+    h3 { font-size: 26px; margin: 32px 0 8px; }
+    h4 { font: 500 16px/1.4 var(--sans); margin: 24px 0 6px; }
+    section { padding: 56px 0 8px; border-top: 1px solid var(--ink); margin-top: 56px; }
+    .lede { font-size: 18px; color: var(--mute); max-width: 60ch; }
+    p, li { max-width: 72ch; }
+    code, kbd { font-family: var(--mono); font-size: 13.5px; background: var(--surface); padding: 1px 6px; }
+    table { width: 100%; border-collapse: collapse; margin: 12px 0 8px; font-size: 14.5px; }
+    th, td { text-align: left; vertical-align: top; padding: 10px 12px 10px 0; border-bottom: 1px solid var(--rule); }
+    th { font-family: var(--mono); font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--mute); font-weight: 400; }
+    td:first-child { white-space: nowrap; font-weight: 500; }
+    .note { padding: 14px 18px; border: 1px solid var(--rule); border-left: 2px solid var(--copper); background: var(--surface); margin: 16px 0; max-width: 72ch; }
+    .note strong { display: block; font-family: var(--mono); font-weight: 400; font-size: 11.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--copper); margin-bottom: 4px; }
+    ol.steps { padding-left: 1.3em; }
+    ol.steps li + li { margin-top: 6px; }
+    details { border-bottom: 1px solid var(--rule); max-width: 72ch; }
+    details:first-of-type { border-top: 1px solid var(--rule); }
+    summary { cursor: pointer; padding: 14px 0; font-family: var(--serif); font-size: 22px; list-style: none; display: flex; justify-content: space-between; gap: 16px; }
+    summary::-webkit-details-marker { display: none; }
+    summary::after { content: '+'; font-family: var(--mono); color: var(--mute); }
+    details[open] summary::after { content: '–'; }
+    details > div { padding-bottom: 16px; }
+    .btn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 22px; background: var(--ink); color: var(--sand); text-decoration: none; font-weight: 500; font-size: 14.5px; }
+    .btn:hover { color: var(--sand); background: var(--copper); }
+    footer { margin-top: 80px; padding-top: 20px; border-top: 1px solid var(--rule); font-size: 13.5px; color: var(--mute); }
+    @media (max-width: 860px) {
+      .wrap { grid-template-columns: 1fr; gap: 0; padding: 0 16px; }
+      nav.toc { position: static; max-height: none; padding-bottom: 0; }
+      td:first-child { white-space: normal; }
+      table { display: block; overflow-x: auto; }
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="toc" aria-label="Contents">
+    <a class="brand" href="#top">Lumen</a>
+    <p class="label">Theme documentation · v1.0.0</p>
+    <ol>
+      <li><a href="#start"><span>01</span>Getting started</a></li>
+      <li><a href="#settings"><span>02</span>Theme settings</a></li>
+      <li><a href="#header-footer"><span>03</span>Header and footer</a></li>
+      <li><a href="#home"><span>04</span>Home page sections</a></li>
+      <li><a href="#products"><span>05</span>Product pages</a></li>
+      <li><a href="#collections"><span>06</span>Collections, search and filters</a></li>
+      <li><a href="#cart"><span>07</span>Cart and checkout</a></li>
+      <li><a href="#pages"><span>08</span>Pages, blog and gift cards</a></li>
+      <li><a href="#accessibility"><span>09</span>Accessibility and motion</a></li>
+      <li><a href="#faq"><span>10</span>FAQ</a></li>
+      <li><a href="#support"><span>11</span>Support policy</a></li>
+      <li><a href="#changelog"><span>12</span>Release notes</a></li>
+    </ol>
+  </nav>
+
+  <main id="top">
+    <p class="label">Shopify theme for med spas, aesthetic clinics and skincare lines</p>
+    <h1>Lumen <em>documentation</em></h1>
+    <p class="lede">Lumen is built for clinics that sell treatments and a skincare line from one site. This guide walks through every setting, section and block in the order you'll meet them in the theme editor.</p>
+    <p><a class="btn" href="#support">Contact support</a></p>
+
+    <!-- 01 -->
+    <section id="start" aria-labelledby="start-h">
+      <p class="label">01</p>
+      <h2 id="start-h">Getting started</h2>
+
+      <h3>Install the theme</h3>
+      <ol class="steps">
+        <li>In your Shopify admin, go to <strong>Online Store → Themes</strong>.</li>
+        <li>Open the Theme Store, find Lumen and select <strong>Try theme</strong> or <strong>Buy theme</strong>. Lumen is added to your theme library.</li>
+        <li>Select <strong>Customize</strong> to open the theme editor. Your current live theme is not changed until you select <strong>Publish</strong>.</li>
+      </ol>
+
+      <div class="note"><strong>Before you change code</strong>Always duplicate the theme first (<strong>Online Store → Themes → … → Duplicate</strong>) and work on the copy. Theme updates can't be merged into files you've edited by hand.</div>
+
+      <h3>Set up in this order</h3>
+      <ol class="steps">
+        <li><strong>Booking:</strong> in <strong>Theme settings → Booking</strong>, paste the link to your booking software. Every Book button in the theme uses it.</li>
+        <li><strong>Logo and menu:</strong> in the <strong>Header</strong> section, upload a logo and choose your main menu.</li>
+        <li><strong>Colors and type:</strong> in <strong>Theme settings → Colors</strong> and <strong>Typography</strong>.</li>
+        <li><strong>Home page:</strong> replace the placeholder images and text in each section.</li>
+        <li><strong>Products:</strong> add the product metafields described in <a href="#metafields">Product content</a>, then turn off <strong>Show demo product copy</strong>.</li>
+        <li><strong>Filters:</strong> choose which filters appear with the free Search &amp; Discovery app (see <a href="#collections">Collections and search</a>).</li>
+      </ol>
+
+      <h3>How Lumen is organized</h3>
+      <p>Every page is built from <strong>sections</strong>, and many sections hold <strong>blocks</strong>. In the theme editor you can add, remove, reorder and hide sections and blocks on any page. App blocks from installed apps can be added to the product page and to the Featured product section, and a <strong>Custom Liquid</strong> section or block is available for small additions.</p>
+    </section>
+
+    <!-- 02 -->
+    <section id="settings" aria-labelledby="settings-h">
+      <p class="label">02</p>
+      <h2 id="settings-h">Theme settings</h2>
+      <p>Open the theme editor and select the gear icon (<strong>Theme settings</strong>). These settings apply across the whole store.</p>
+
+      <h3>Colors</h3>
+      <p>Lumen's palette is sand, indigo and copper. Copper is the accent and is used sparingly: links on hover, labels and small highlights.</p>
+      <table>
+        <thead><tr><th>Setting</th><th>What it controls</th></tr></thead>
+        <tbody>
+          <tr><td>Background (sand)</td><td>The page background.</td></tr>
+          <tr><td>Ink</td><td>Headings, body text, buttons and borders that need emphasis.</td></tr>
+          <tr><td>Muted text</td><td>Secondary text such as captions and descriptions.</td></tr>
+          <tr><td>Rules and borders</td><td>Hairline dividers between rows and around panels.</td></tr>
+          <tr><td>Raised surface</td><td>Image backgrounds, placeholders and boxed panels.</td></tr>
+          <tr><td>Accent (copper)</td><td>Labels, highlights and the copper italic heading line.</td></tr>
+          <tr><td>Text on accent</td><td>Text placed on top of the accent color, such as the cart count.</td></tr>
+          <tr><td>Inverted sections: Background and Text</td><td>Dark sections such as the Routine builder and Book section.</td></tr>
+        </tbody>
+      </table>
+      <div class="note"><strong>Readability</strong>Lumen automatically darkens the accent slightly when it's used for small text, so labels stay readable. If you choose a much lighter accent, check small copper text against your background.</div>
+
+      <h3>Typography</h3>
+      <table>
+        <thead><tr><th>Setting</th><th>What it controls</th></tr></thead>
+        <tbody>
+          <tr><td>Headings</td><td>Display headings and large numbers. Default: Instrument Serif.</td></tr>
+          <tr><td>Body</td><td>Paragraphs, buttons and navigation. Default: Inter. Bold, medium and italic styles are loaded automatically.</td></tr>
+          <tr><td>Labels and numbers</td><td>Small uppercase labels, prices and figure captions. Default: IBM Plex Mono.</td></tr>
+          <tr><td>Heading size</td><td>Scales all display headings from 80% to 120%.</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Layout</h3>
+      <table>
+        <thead><tr><th>Setting</th><th>What it controls</th></tr></thead>
+        <tbody>
+          <tr><td>Page width</td><td>The maximum width of page content: Narrow, Standard or Wide.</td></tr>
+          <tr><td>Page margin</td><td>The space at the left and right edges on small screens.</td></tr>
+          <tr><td>Space between sections</td><td>Vertical spacing between sections on large screens. It shrinks automatically on phones.</td></tr>
+          <tr><td>Show demo product copy</td><td>Fills in claims, ingredients and notes for Lumen's six demo products. Turn this off once you've added your own product metafields.</td></tr>
+          <tr><td>Draw the plate frame around the page</td><td>A thin decorative frame around the edge of the screen.</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Motion and navigation</h3>
+      <table>
+        <thead><tr><th>Setting</th><th>What it controls</th></tr></thead>
+        <tbody>
+          <tr><td>Animate the page</td><td>Entrance animations, image reveals, button fills and smooth accordions. Visitors who have asked their device to reduce motion never see animations, whatever this is set to.</td></tr>
+          <tr><td>Show the action bar on phones</td><td>A bar at the bottom of the screen on phones with a Book button and a call button, or Add to bag on product pages. It hides itself where the page already shows the same button.</td></tr>
+          <tr><td>Show the back-to-top button</td><td>A square button in the bottom corner that returns to the top. Its outline fills as the visitor scrolls.</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Booking</h3>
+      <p>Lumen doesn't replace your booking software. Every Book button links to the address you enter here: Boulevard, Vagaro, Zenoti, Mindbody, Jane, Acuity or any other booking page works.</p>
+      <table>
+        <thead><tr><th>Setting</th><th>What it controls</th></tr></thead>
+        <tbody>
+          <tr><td>Booking link</td><td>The page every Book button opens. If it's empty, Book buttons are hidden.</td></tr>
+          <tr><td>Button text</td><td>The label on every Book button. Default: Book a consultation.</td></tr>
+          <tr><td>Clinic phone</td><td>Shown in the header, footer, menu and phone action bar. Tapping it starts a call on phones.</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Social media</h3>
+      <p>Paste the full address of each profile, for example <code>https://instagram.com/yourclinic</code>. Icons appear in the footer for every network you fill in. Lumen supports Instagram, TikTok, Facebook, Pinterest, YouTube, X (Twitter), Snapchat and Threads.</p>
+    </section>
+
+    <!-- 03 -->
+    <section id="header-footer" aria-labelledby="hf-h">
+      <p class="label">03</p>
+      <h2 id="hf-h">Header and footer</h2>
+
+      <h3>Header</h3>
+      <table>
+        <thead><tr><th>Setting</th><th>What it controls</th></tr></thead>
+        <tbody>
+          <tr><td>Logo</td><td>Any shape works. Leave it empty to show your store name in the heading font.</td></tr>
+          <tr><td>Logo width</td><td>From 60 to 240px.</td></tr>
+          <tr><td>Menu</td><td>The main navigation. Menus can be nested up to three levels deep; nested items open as dropdowns on desktop and expand inside the menu on phones.</td></tr>
+          <tr><td>Customer account menu</td><td>The links shown when signed-in customers open their account from the header.</td></tr>
+          <tr><td>Sticky header</td><td><strong>Hide on scroll down, show on scroll up</strong> (default), <strong>Always visible</strong>, or <strong>Scrolls away with the page</strong>.</td></tr>
+          <tr><td>Show reading progress under the header</td><td>A thin copper line under the header that grows as the visitor scrolls.</td></tr>
+        </tbody>
+      </table>
+      <p>The header also includes search with suggestions as you type, the customer account button and the cart. On the home page, menu links that point to a section (for example <code>#treatments</code>) are highlighted while that section is on screen.</p>
+      <div class="note"><strong>Linking to home page sections</strong>To link a menu item to a home page section, use <code>/#</code> followed by the section's anchor: <code>/#treatments</code>, <code>/#concerns</code>, <code>/#results</code>, <code>/#practitioners</code>, <code>/#routine</code>, <code>/#shop</code>, <code>/#reviews</code>, <code>/#faq</code>, <code>/#journal</code> or <code>/#book</code>.</div>
+
+      <h3>Footer</h3>
+      <p>The footer has three kinds of blocks: <strong>Menu</strong> (a heading and a menu), <strong>Clinic details</strong> (address and opening hours) and <strong>Newsletter</strong> (a signup form that adds customers to your Shopify customer list with the tag <code>newsletter</code>).</p>
+      <table>
+        <thead><tr><th>Setting</th><th>What it controls</th></tr></thead>
+        <tbody>
+          <tr><td>About line</td><td>A short description under your store name.</td></tr>
+          <tr><td>Legal note</td><td>Small print next to the copyright line, such as a results disclaimer.</td></tr>
+          <tr><td>Show payment icons</td><td>Icons for the payment methods your store accepts.</td></tr>
+          <tr><td>Show Follow on Shop</td><td>Lets customers follow your store in the Shop app. Requires Shop Pay.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 04 -->
+    <section id="home" aria-labelledby="home-h">
+      <p class="label">04</p>
+      <h2 id="home-h">Home page sections</h2>
+      <p>All of these sections can be added to any page that supports sections. Until you add your own images, sections show neutral placeholder art.</p>
+
+      <h3>Hero (split)</h3>
+      <p>A large heading on the left and a full-height panel on the right.</p>
+      <ul>
+        <li><strong>Heading:</strong> separate lines with a vertical bar, for example <code>Results you can see.|Care you can feel.</code> The second line is set in copper italic.</li>
+        <li><strong>Show:</strong> choose <strong>Video loop</strong>, <strong>Photograph</strong> or <strong>The plate drawing</strong> (an illustrated line drawing). Videos play muted on a loop; upload them through the video picker.</li>
+        <li><strong>Fact blocks:</strong> up to four small figures under the heading, such as years in practice or treatments performed. Numbers count up when they come into view.</li>
+        <li><strong>Ticker:</strong> a scrolling line of treatments. Separate items with commas and add a duration with a middle dot: <code>Microneedling · 60 min</code>.</li>
+      </ul>
+      <p>Recommended image size: 1400 x 1750px or larger, portrait.</p>
+
+      <h3>Treatment menu</h3>
+      <p>A ruled list of treatments. Each <strong>Treatment</strong> block has a name, what it's for, duration, downtime, an optional starting price and an optional link to a details page.</p>
+
+      <h3>Concerns map</h3>
+      <p>Helps visitors start from their concern (acne, pigmentation, fine lines) rather than a treatment name. Each <strong>Concern</strong> block links to a treatment and a product. If you don't pick a product, the text in <strong>Product (if none selected)</strong> is shown instead.</p>
+
+      <h3>Before / after</h3>
+      <p>Comparison sliders that visitors drag to reveal the result. Each <strong>Comparison</strong> block takes a before photo, an after photo, the treatment and the protocol (for example, "3 sessions, 4 weeks apart").</p>
+      <div class="note"><strong>Patient photos</strong>Only use photographs you have written consent to publish, taken in the same light and framing. Use the <strong>Disclaimer</strong> field for any wording your regulator requires. Recommended size: 4:3, at least 1200 x 900px.</div>
+
+      <h3>Practitioners</h3>
+      <p>Portraits of your team. Each <strong>Practitioner</strong> block has a portrait, name, title, registration (for example a license number) and the treatments they lead. On phones the cards become a swipeable row. Portraits look best at 4:5, at least 900 x 1125px.</p>
+
+      <h3>Routine builder</h3>
+      <p>A morning and evening skincare routine with AM / PM tabs. Each <strong>Step</strong> block sets the time of day, the step name, why it matters and the product. Steps are numbered in the order they appear in the editor.</p>
+
+      <h3>Shop the line</h3>
+      <p>A grid of products from one collection. Choose the collection and how many products to show.</p>
+
+      <h3>Image with text</h3>
+      <p>A photograph or video beside a heading, text and an optional link. Turn on <strong>Image on the right</strong> to swap the sides. A video takes precedence over the image.</p>
+
+      <h3>Testimonials</h3>
+      <p>Quotes from patients. Each <strong>Quote</strong> block has the quote, the person's name and the treatment they had. On phones quotes become a swipeable row.</p>
+
+      <h3>FAQ</h3>
+      <p>Questions and answers that open and close. Add one <strong>Question</strong> block per question.</p>
+
+      <h3>Journal</h3>
+      <p>The latest entries from a blog. Choose the blog and how many entries to show.</p>
+
+      <h3>Book</h3>
+      <p>The closing call to book, on a dark background, with your booking link, phone number and opening hours. Its anchor is <code>#book</code>.</p>
+
+      <h3>Featured product</h3>
+      <p>One product that can be bought without leaving the page, with the same blocks as the product page (see below).</p>
+
+      <h3>Product recommendations</h3>
+      <p>Available on product pages only. Choose <strong>Complementary</strong> to show products you've paired with the Search &amp; Discovery app, or <strong>Related</strong> for products Shopify chooses automatically. If there's nothing to recommend, the section hides itself.</p>
+
+      <h3>Custom Liquid</h3>
+      <p>Paste an app snippet or a small piece of Liquid or HTML. Code added here isn't covered by theme support (see <a href="#support">Support policy</a>).</p>
+    </section>
+
+    <!-- 05 -->
+    <section id="products" aria-labelledby="products-h">
+      <p class="label">05</p>
+      <h2 id="products-h">Product pages</h2>
+      <p>The <strong>Product information</strong> section shows media on the left and a column of blocks on the right. Reorder, hide or remove any block in the theme editor.</p>
+
+      <table>
+        <thead><tr><th>Block</th><th>What it shows</th></tr></thead>
+        <tbody>
+          <tr><td>Vendor</td><td>The product's vendor. Hidden by default.</td></tr>
+          <tr><td>Title</td><td>The product name.</td></tr>
+          <tr><td>Claim</td><td>A one-line promise from the <code>custom.claim</code> metafield, or the product type if that's empty.</td></tr>
+          <tr><td>Price</td><td>Price, compare-at price with a Sale label, unit price, tax information and the Shop Pay Installments message when your store offers it.</td></tr>
+          <tr><td>Variant picker</td><td>One row of buttons per option. Color and pattern swatches appear automatically when you've set them up in Shopify.</td></tr>
+          <tr><td>Buy buttons</td><td>Quantity, Add to bag, dynamic checkout buttons (such as Shop Pay or Apple Pay) and pickup availability. Both can be turned off.</td></tr>
+          <tr><td>Practitioner pick</td><td>A highlighted note shown only on products tagged <code>practitioner-pick</code>.</td></tr>
+          <tr><td>Specifications</td><td>Volume, skin type, when to use it, and the SKU.</td></tr>
+          <tr><td>Description</td><td>The product description in a panel that can start open or closed.</td></tr>
+          <tr><td>Product details</td><td>Ingredients, how to use and the practitioner's note, each in its own panel, plus your shipping and returns text.</td></tr>
+          <tr><td>Custom Liquid</td><td>Your own snippet or app code.</td></tr>
+          <tr><td>Apps</td><td>Blocks from apps you've installed, such as reviews.</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Media</h3>
+      <p>Lumen shows every image, video, YouTube or Vimeo link and 3D model you add to a product. The first is shown large. When a customer chooses a variant that has its own image, that image moves to the front. Turn on <strong>Show 3D models first</strong> to lead with a 3D model when a product has one. Set focal points in Shopify (on the image in <strong>Content → Files</strong>) to control how images are cropped.</p>
+
+      <h3 id="metafields">Product content (metafields)</h3>
+      <p>The Claim, Specifications and Product details blocks read these product metafields. Create them under <strong>Settings → Custom data → Products</strong> with the namespace <code>custom</code>, then fill them in on each product.</p>
+      <table>
+        <thead><tr><th>Name and key</th><th>Type</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td>Claim · <code>custom.claim</code></td><td>Single line text</td><td>Ceramides in the ratio skin actually uses.</td></tr>
+          <tr><td>Volume · <code>custom.volume</code></td><td>Single line text</td><td>30 ml</td></tr>
+          <tr><td>Skin type · <code>custom.skin_type</code></td><td>Single line text</td><td>All, Oily, Dry</td></tr>
+          <tr><td>Use when · <code>custom.use_when</code></td><td>Single line text</td><td>AM / PM</td></tr>
+          <tr><td>Ingredients · <code>custom.ingredients</code></td><td>Multi-line text</td><td>The full INCI list.</td></tr>
+          <tr><td>How to use · <code>custom.how_to_use</code></td><td>Rich text</td><td>Application steps.</td></tr>
+          <tr><td>Practitioner's note · <code>custom.practitioner_note</code></td><td>Rich text</td><td>Advice from your clinicians.</td></tr>
+        </tbody>
+      </table>
+      <p>Empty fields are simply left out. When you've filled in your own products, turn off <strong>Theme settings → Layout → Show demo product copy</strong>.</p>
+
+      <h3>Pickup availability</h3>
+      <p>When local pickup is turned on for one of your locations (<strong>Settings → Shipping and delivery → Local pickup</strong>), the Buy buttons block shows whether the selected variant can be picked up, with a list of locations.</p>
+    </section>
+
+    <!-- 06 -->
+    <section id="collections" aria-labelledby="col-h">
+      <p class="label">06</p>
+      <h2 id="col-h">Collections, search and filters</h2>
+      <p>Collection pages show the collection's title, description and image, a filter sidebar and the product grid. The search page uses the same filters and sorting for product results, followed by matching pages and journal entries.</p>
+      <h3>Choose your filters</h3>
+      <ol class="steps">
+        <li>Install the free <strong>Shopify Search &amp; Discovery</strong> app.</li>
+        <li>In the app, open <strong>Filters</strong> and add the ones you want: availability, price, product type, vendor, tags, variant options or metafields such as skin type or concern.</li>
+        <li>Filters appear automatically on collection and search pages, in the order you set in the app.</li>
+      </ol>
+      <p>Filters apply as soon as a customer changes them, without reloading the page.</p>
+      <table>
+        <thead><tr><th>Collection setting</th><th>What it controls</th></tr></thead>
+        <tbody>
+          <tr><td>Eyebrow</td><td>The small label above the collection title.</td></tr>
+          <tr><td>Show collection description</td><td>The description you write on the collection.</td></tr>
+          <tr><td>Show collection image</td><td>The collection's image beside the title.</td></tr>
+          <tr><td>Products per page</td><td>From 8 to 48.</td></tr>
+        </tbody>
+      </table>
+      <p>Search shows suggestions as customers type in the header. Use the arrow keys to move through suggestions and Enter to open one.</p>
+    </section>
+
+    <!-- 07 -->
+    <section id="cart" aria-labelledby="cart-h">
+      <p class="label">07</p>
+      <h2 id="cart-h">Cart and checkout</h2>
+      <p>The cart page lists each item with its price, quantity, variant, any subscription plan and any discounts. Changing a quantity or removing an item updates the cart straight away. Order discounts, the total and tax information appear in the summary.</p>
+      <ul>
+        <li><strong>Enable order notes:</strong> lets customers leave a note, for example allergies or delivery instructions.</li>
+        <li><strong>Dynamic checkout buttons</strong> such as Shop Pay, Apple Pay and Google Pay appear under the Check out button when you've turned them on in <strong>Settings → Payments</strong>.</li>
+      </ul>
+      <p>Lumen calls the cart "Bag" in the storefront to match its tone.</p>
+    </section>
+
+    <!-- 08 -->
+    <section id="pages" aria-labelledby="pages-h">
+      <p class="label">08</p>
+      <h2 id="pages-h">Pages, blog and gift cards</h2>
+      <h3>Contact page</h3>
+      <ol class="steps">
+        <li>Go to <strong>Online Store → Pages</strong> and create a page called Contact.</li>
+        <li>Under <strong>Theme template</strong>, choose <strong>contact</strong>.</li>
+      </ol>
+      <p>Messages are sent to your store's sender email. To change the address, go to <strong>Settings → Notifications</strong>.</p>
+      <h3>Journal (blog)</h3>
+      <p>The journal lists entries with their image, date and excerpt. Articles show the author (which you can hide), tags and comments when comments are enabled for the blog. If you moderate comments, customers are told their comment will appear once approved.</p>
+      <h3>Gift cards</h3>
+      <p>The gift card page shows the balance, the code with a Copy button, a QR code for in-store redemption, Add to Apple Wallet and a Print button.</p>
+      <h3>Password page</h3>
+      <p>While your store is password protected, visitors see your store name, your password message and a password field.</p>
+    </section>
+
+    <!-- 09 -->
+    <section id="accessibility" aria-labelledby="a11y-h">
+      <p class="label">09</p>
+      <h2 id="a11y-h">Accessibility and motion</h2>
+      <ul>
+        <li>Every control works with a keyboard and has a visible focus outline, including dropdown menus, filters and search suggestions.</li>
+        <li>Text colors are chosen to meet WCAG AA contrast against the default palette.</li>
+        <li>Buttons and links on phones are at least 44 x 44px.</li>
+        <li>Animations respect the visitor's reduced-motion setting, and you can turn them off for everyone in <strong>Theme settings → Motion and navigation</strong>.</li>
+      </ul>
+      <p>Add alt text to your images in Shopify so screen readers can describe them.</p>
+    </section>
+
+    <!-- 10 -->
+    <section id="faq" aria-labelledby="faq-h">
+      <p class="label">10</p>
+      <h2 id="faq-h">Frequently asked questions</h2>
+
+      <details><summary>Can customers book appointments inside the store?</summary><div><p>Lumen links every Book button to your existing booking software, so appointments, deposits and reminders stay where your team already manages them. Add the link in <strong>Theme settings → Booking</strong>.</p></div></details>
+
+      <details><summary>Why are my Book buttons missing?</summary><div><p>Book buttons are hidden when the booking link is empty. Add it in <strong>Theme settings → Booking → Booking link</strong>.</p></div></details>
+
+      <details><summary>Why do my products show text I didn't write?</summary><div><p>That's the demo product copy, which only appears for Lumen's six demo products. Turn off <strong>Theme settings → Layout → Show demo product copy</strong>, and add your own content with the <a href="#metafields">product metafields</a>.</p></div></details>
+
+      <details><summary>How do I add filters such as skin type or concern?</summary><div><p>Create a product metafield (for example <code>custom.skin_type</code>), fill it in on your products, then add it as a filter in the free Search &amp; Discovery app. It appears on collection and search pages automatically.</p></div></details>
+
+      <details><summary>Why don't product recommendations appear?</summary><div><p>Related products need some sales history before Shopify can suggest them, and complementary products are chosen by you in the Search &amp; Discovery app. The section stays hidden until there's something to show.</p></div></details>
+
+      <details><summary>Can I use my own fonts?</summary><div><p>Choose from Shopify's font library in <strong>Theme settings → Typography</strong>. Uploading custom font files requires editing code, which isn't covered by theme support.</p></div></details>
+
+      <details><summary>Can I turn off the animations?</summary><div><p>Yes. Turn off <strong>Theme settings → Motion and navigation → Animate the page</strong>. Visitors who've asked their device to reduce motion never see animations either way.</p></div></details>
+
+      <details><summary>How do I link the menu to sections on my home page?</summary><div><p>Use a link that starts with <code>/#</code>, such as <code>/#treatments</code> or <code>/#book</code>. See <a href="#header-footer">Header and footer</a> for the full list.</p></div></details>
+
+      <details><summary>How do I hide the bottom bar on phones?</summary><div><p>Turn off <strong>Theme settings → Motion and navigation → Show the action bar on phones</strong>.</p></div></details>
+
+      <details><summary>How do I update Lumen to a new version?</summary><div><p>When an update is available, Shopify shows it in <strong>Online Store → Themes</strong>. Updating adds a new copy of the theme with your settings carried over; review it, then publish. Changes you made to theme code aren't carried over.</p></div></details>
+
+      <details><summary>Is Lumen suitable for medical advertising rules?</summary><div><p>Lumen gives you places for disclaimers, practitioner registrations and consent notes, but the wording you publish is your responsibility. Check the rules that apply to your clinic and country.</p></div></details>
+
+      <details><summary>Can I use Lumen on more than one store?</summary><div><p>Each purchase covers one store. To use Lumen on another store, buy it again from that store.</p></div></details>
+    </section>
+
+    <!-- 11 -->
+    <section id="support" aria-labelledby="support-h">
+      <p class="label">11</p>
+      <h2 id="support-h">Support policy</h2>
+      <p>Support is included with every Lumen purchase. We reply within <strong>two business days</strong> (Monday to Friday, excluding public holidays).</p>
+      <p><a class="btn" href="#support" data-support-form>Open the support form</a></p>
+
+      <h3>What's included</h3>
+      <ul>
+        <li>Help using Lumen's settings, sections and blocks.</li>
+        <li>Fixes for bugs in the theme, such as broken layouts, dead links or features not working as described in this guide.</li>
+        <li>Guidance on setting up the Shopify features Lumen supports, such as metafields, filters and pickup.</li>
+      </ul>
+
+      <h3>What's not included</h3>
+      <ul>
+        <li>Custom design or code changes, including changes to theme files.</li>
+        <li>Problems caused by code you or someone else has added, including Custom Liquid sections and blocks.</li>
+        <li>Setting up or fixing third-party apps. Please contact the app's developer.</li>
+      </ul>
+      <p>We don't sell paid add-on services with Lumen. For custom work, we recommend hiring a <a href="https://www.shopify.com/partners/directory">Shopify Partner</a>.</p>
+
+      <h3>Code customizations</h3>
+      <p>Code examples in this guide or from our support team are provided as a courtesy and aren't supported. Before editing code, duplicate your theme and make changes on the copy. If you're not comfortable editing code, hire a Shopify Partner.</p>
+
+      <h3>When you contact us</h3>
+      <p>Include your store URL (for example <code>yourclinic.myshopify.com</code>), a description of the problem and, if you can, a screenshot. It helps us answer in one reply.</p>
+    </section>
+
+    <!-- 12 -->
+    <section id="changelog" aria-labelledby="cl-h">
+      <p class="label">12</p>
+      <h2 id="cl-h">Release notes</h2>
+      <h3>Version 1.0.0</h3>
+      <p>First release.</p>
+      <ul>
+        <li>Sections for clinics: treatment menu, concerns map, before/after sliders, practitioners, AM/PM routine builder, testimonials, FAQ and a closing Book section.</li>
+        <li>One booking link drives every Book button, with a call button and a phone action bar.</li>
+        <li>Product pages built from blocks, with metafield-driven claims, ingredients, usage and practitioner notes, 3D models, pickup availability and Shop Pay Installments.</li>
+        <li>Complementary and related product recommendations.</li>
+        <li>Filters and sorting on collection and search pages that apply without reloading, plus predictive search.</li>
+        <li>A cart that updates in place, with discounts, unit prices, subscriptions and order notes.</li>
+        <li>Sticky header that hides on scroll, nested menus, reading progress and a back-to-top button.</li>
+        <li>Motion that respects reduced-motion settings, with a setting to turn it off.</li>
+      </ul>
+    </section>
+
+    <footer>
+      <p>Lumen is a Shopify theme. This documentation covers version 1.0.0. Last updated 28 October 2026.</p>
+    </footer>
+  </main>
+</div>
+</body>
+</html>
